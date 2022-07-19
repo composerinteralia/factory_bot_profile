@@ -1,19 +1,27 @@
+require_relative "frame"
+
 module FactoryBotProfiler
   class Subscriber
     def initialize(collector)
       @collector = collector
+      @depth = 0
       @stack = []
     end
 
     def start(_, _, payload)
-      @stack << Time.now
+      @stack[@depth] = Frame.new(payload[:name])
+      @depth += 1
     end
 
-    def finish(_, _, payload)
-      depth = @stack.count
-      duration = Time.now - @stack.pop
-      # payload[:strategy]
-      @collector.collect(payload[:name], duration, depth)
+    def finish(*)
+      @depth -= 1
+
+      frame = @stack[@depth]
+      frame.finish!
+
+      @stack[@depth - 1].observe_child(frame) unless @depth.zero?
+
+      @collector.collect(frame, @depth)
     end
   end
 end

@@ -9,9 +9,9 @@ module FactoryBotProfiler
       @by_factory = Hash.new { |h, k| h[k] = FactoryStat.new(k) }
     end
 
-    def collect(name, duration, depth)
-      @total_time += duration if depth == 1
-      @by_factory[name].increment(duration)
+    def collect(frame, depth)
+      @total_time += frame.duration if depth == 1
+      @by_factory[frame.name].increment(frame)
     end
 
     def highest_count(n = 1)
