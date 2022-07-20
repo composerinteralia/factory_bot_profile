@@ -85,6 +85,79 @@ RSpec.describe FactoryBotProfiler do
     expect(highest_average_time.average_time.round(1)).to eq(1.4)
   end
 
+  it "reports with traits" do
+    define_class("FakeRecord") do
+      def save!
+      end
+    end
+
+    define_class("Car", FakeRecord) do
+      attr_accessor :moon_roof, :flatscreen_tv, :seat_warmer
+
+      def initialize
+        sleep 0.4
+      end
+    end
+
+    define_class("MoonRoof", FakeRecord) do
+      def initialize
+        sleep 0.3
+      end
+    end
+
+    define_class("FlatscreenTv", FakeRecord) do
+      def initialize
+        sleep 0.2
+      end
+    end
+
+    define_class("SeatWarmer", FakeRecord) do
+      def initialize
+        sleep 0.1
+      end
+    end
+
+    FactoryBot.define do
+      factory :car do
+        trait(:lx) do
+          association :moon_roof
+          association :flatscreen_tv
+          association :seat_warmer
+        end
+
+        trait(:ex) do
+          association :moon_roof
+        end
+      end
+
+      factory :moon_roof
+      factory :flatscreen_tv
+      factory :seat_warmer
+    end
+
+    collector = FactoryBotProfiler::Collector.new
+    FactoryBotProfiler.subscribe(collector)
+
+    FactoryBot.create(:car)
+    FactoryBot.create(:car, :ex)
+    FactoryBot.create(:car, :lx)
+
+    FactoryBotProfiler.report if ENV["DEBUG"]
+
+    expect(collector.total_time.round(1)).to eq(2.1)
+
+    highest_total_time = collector.highest_total_time(1).first
+    expect(highest_total_time.name).to eq(:car)
+
+    expect(highest_total_time.individual_child_times[:moon_roof].round(1)).to eq(0.6)
+    expect(highest_total_time.individual_child_times[:flatscreen_tv].round(1)).to eq(0.2)
+    expect(highest_total_time.individual_child_times[:seat_warmer].round(1)).to eq(0.1)
+
+    expect(highest_total_time.individual_child_count[:moon_roof]).to eq(2)
+    expect(highest_total_time.individual_child_count[:flatscreen_tv]).to eq(1)
+    expect(highest_total_time.individual_child_count[:seat_warmer]).to eq(1)
+  end
+
   private
 
   def define_class(name, parent = Object, &block)
