@@ -8,8 +8,8 @@ require_relative "factory_bot_profiler/subscriber"
 require_relative "factory_bot_profiler/reporters/simple_reporter"
 
 module FactoryBotProfiler
-  def self.subscribe(collector_class = Collector)
-    @collector = collector_class.new
+  def self.subscribe(collector = Collector.new)
+    @collector = collector
     subscriber = FactoryBotProfiler::Subscriber.new(@collector)
     ActiveSupport::Notifications.subscribe("factory_bot.run_factory", subscriber)
   end

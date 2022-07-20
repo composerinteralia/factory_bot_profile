@@ -57,14 +57,14 @@ RSpec.describe FactoryBotProfiler do
       factory :profile
     end
 
-    FactoryBotProfiler.subscribe
+    collector = FactoryBotProfiler::Collector.new
+    FactoryBotProfiler.subscribe(collector)
 
     FactoryBot.create(:repository) #   1 repo, 1 org, 2 users, 2 profiles
     FactoryBot.create(:organization) #         1 org, 1 user,  1 profile
     FactoryBot.create(:profile) #                              1 profile
 
     FactoryBotProfiler.report if ENV["DEBUG"]
-    collector = test_report
 
     expect(collector.total_time.round(1)).to eq(2.3)
 
@@ -91,24 +91,5 @@ RSpec.describe FactoryBotProfiler do
     stub_const(name, Class.new(parent)).tap do |const|
       const.class_eval(&block) if block
     end
-  end
-
-  def test_report
-    collector = nil
-
-    reporter = Class.new do
-      def initialize(collector)
-        @collector = collector
-      end
-
-      # Use define_method for the block closure so we can set collector
-      define_method :report do
-        collector = @collector
-      end
-    end
-
-    FactoryBotProfiler.report(reporter)
-
-    collector
   end
 end
