@@ -21,7 +21,7 @@ module FactoryBotProfiler
 
       @stack[@depth - 1].observe_child(frame) unless @depth.zero?
 
-      @collector.collect(frame, @depth)
+      @collector.collect(frame)
     end
   end
 end

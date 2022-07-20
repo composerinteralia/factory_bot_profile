@@ -2,16 +2,16 @@ require_relative "factory_stat"
 
 module FactoryBotProfiler
   class Collector
-    attr_reader :total_time
-
     def initialize
-      @total_time = 0
       @by_factory = Hash.new { |h, k| h[k] = FactoryStat.new(k) }
     end
 
-    def collect(frame, depth)
-      @total_time += frame.duration if depth == 1
+    def collect(frame)
       @by_factory[frame.name].increment(frame)
+    end
+
+    def total_time
+      @by_factory.values.map(&:total_self_time).sum
     end
 
     def highest_count(n = 1)
