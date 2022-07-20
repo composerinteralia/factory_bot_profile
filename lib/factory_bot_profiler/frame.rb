@@ -1,6 +1,6 @@
 module FactoryBotProfiler
   class Frame
-    attr_accessor :name, :start, :duration, :child_time, :child_count
+    attr_accessor :name, :start, :child_time, :child_count
 
     def initialize(name)
       @name = name
@@ -22,14 +22,17 @@ module FactoryBotProfiler
       @duration = Time.now - @start
     end
 
-    def self_time
+    def duration
       raise "self time called before frame was stopped" unless @duration
+      @duration
+    end
 
+    def self_time
       @duration - total_child_time
     end
 
     def total_child_time
-      @child_time.reduce(0) { |sum, (k, v)| sum + v }
+      @child_time.values.sum
     end
   end
 end

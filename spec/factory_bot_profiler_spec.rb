@@ -64,7 +64,8 @@ RSpec.describe FactoryBotProfiler do
     FactoryBot.create(:organization) #         1 org, 1 user,  1 profile
     FactoryBot.create(:profile) #                              1 profile
 
-    FactoryBotProfiler.report if ENV["DEBUG"]
+    FactoryBotProfiler.report(output: File.new("test_reports/usage.txt", "w"))
+    FactoryBotProfiler.report(FactoryBotProfiler::Reporters::JsonReporter, output: File.new("test_reports/usage.json", "w"))
 
     expect(collector.total_time.round(1)).to eq(2.3)
 
@@ -142,7 +143,8 @@ RSpec.describe FactoryBotProfiler do
     FactoryBot.create(:car, :ex)
     FactoryBot.create(:car, :lx)
 
-    FactoryBotProfiler.report if ENV["DEBUG"]
+    FactoryBotProfiler.report(output: File.new("test_reports/usage_with_traits.txt", "w"))
+    FactoryBotProfiler.report(FactoryBotProfiler::Reporters::JsonReporter, output: File.new("test_reports/usage_with_traits.json", "w"))
 
     expect(collector.total_time.round(1)).to eq(2.1)
 

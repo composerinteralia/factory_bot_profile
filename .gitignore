@@ -6,6 +6,8 @@
 /pkg/
 /spec/reports/
 /tmp/
+/test_reports/*.txt
+/test_reports/*.json
 factory_bot_profiler-*.gem
 
 # rspec failure tracking
