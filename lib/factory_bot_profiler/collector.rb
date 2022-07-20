@@ -22,6 +22,10 @@ module FactoryBotProfiler
       take_factory_values_by(:total_time, n)
     end
 
+    def highest_self_time(n = 1)
+      take_factory_values_by(:total_self_time, n)
+    end
+
     def highest_average_time(n = 1)
       take_factory_values_by(:average_time, n)
     end
