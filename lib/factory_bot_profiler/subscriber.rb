@@ -4,22 +4,18 @@ module FactoryBotProfiler
   class Subscriber
     def initialize(collector)
       @collector = collector
-      @depth = 0
       @stack = []
     end
 
     def start(_, _, payload)
-      @stack[@depth] = Frame.new(payload[:name])
-      @depth += 1
+      @stack << Frame.new(payload[:name])
     end
 
     def finish(*)
-      @depth -= 1
-
-      frame = @stack[@depth]
+      frame = @stack.pop
       frame.finish!
 
-      @stack[@depth - 1].observe_child(frame) unless @depth.zero?
+      @stack[-1].observe_child(frame) unless @stack.empty?
 
       @collector.collect(frame)
     end

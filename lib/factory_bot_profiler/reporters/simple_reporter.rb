@@ -16,7 +16,7 @@ module FactoryBotProfiler
         puts "  Factories taking most time overall:"
         @collector.highest_total_time(N).each do |stat|
           puts "    - :#{stat.name} factory took #{(stat.total_time).round(2)} seconds overall"
-          puts "       (#{stat.total_child_time.round(2)} seconds spent in child factories)" unless stat.total_child_time.zero?
+          puts "       (#{stat.total_child_time.round(2)} seconds spent in associated child factories)" unless stat.total_child_time.zero?
         end
         puts
         puts "  Slowest factories on average:"
