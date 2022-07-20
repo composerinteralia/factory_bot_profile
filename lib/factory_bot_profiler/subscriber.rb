@@ -1,23 +1,18 @@
-require_relative "frame"
+require_relative "stack"
 
 module FactoryBotProfiler
   class Subscriber
     def initialize(collector)
+      @stack = Stack.new
       @collector = collector
-      @stack = []
     end
 
     def start(_, _, payload)
-      @stack << Frame.new(payload[:name])
+      @stack << payload[:name]
     end
 
     def finish(*)
-      frame = @stack.pop
-      frame.finish!
-
-      @stack[-1].observe_child(frame) unless @stack.empty?
-
-      @collector.collect(frame)
+      @collector.collect(@stack.pop)
     end
   end
 end
