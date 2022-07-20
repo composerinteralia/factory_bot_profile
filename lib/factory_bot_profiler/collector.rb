@@ -3,7 +3,7 @@ require_relative "factory_stat"
 module FactoryBotProfiler
   class Collector
     def initialize
-      @by_factory = Hash.new { |h, k| h[k] = FactoryStat.new(k) }
+      @by_factory = factory_stats
     end
 
     def collect(frame)
@@ -42,10 +42,22 @@ module FactoryBotProfiler
       @by_factory.each(...)
     end
 
+    def marshal_dump
+      Hash[@by_factory]
+    end
+
+    def marshal_load(by_factory)
+      @by_factory = factory_stats.merge!(by_factory)
+    end
+
     private
 
     def take_factory_values_by(stat, n)
       @by_factory.values.sort_by(&stat).last(n).reverse
+    end
+
+    def factory_stats
+      Hash.new { |h, k| h[k] = FactoryStat.new(k) }
     end
   end
 end
