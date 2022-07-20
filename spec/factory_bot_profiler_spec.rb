@@ -6,7 +6,8 @@ require "factory_bot"
 RSpec.describe FactoryBotProfiler do
   it "reports factory usage" do
     define_class("FakeRecord") do
-      def save!; end
+      def save!
+      end
     end
 
     define_class("Repository", FakeRecord) do
@@ -58,9 +59,9 @@ RSpec.describe FactoryBotProfiler do
 
     FactoryBotProfiler.subscribe
 
-    FactoryBot.create(:repository)   # 1 repo, 1 org, 2 users, 2 profiles
+    FactoryBot.create(:repository) #   1 repo, 1 org, 2 users, 2 profiles
     FactoryBot.create(:organization) #         1 org, 1 user,  1 profile
-    FactoryBot.create(:profile)      #                         1 profile
+    FactoryBot.create(:profile) #                              1 profile
 
     FactoryBotProfiler.report if ENV["DEBUG"]
     collector = test_report
