@@ -17,4 +17,9 @@ module FactoryBotProfiler
   def self.report(reporter_class = Reporters::SimpleReporter)
     reporter_class.new(@collector).report if @collector
   end
+
+  def self.merge_and_report(collectors, reporter_class = Reporters::SimpleReporter)
+    merged = collectors.reduce(Collector.new, &:merge!)
+    reporter_class.new(merged).report
+  end
 end

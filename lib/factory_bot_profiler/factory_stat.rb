@@ -22,5 +22,13 @@ module FactoryBotProfiler
     def total_self_time
       total_time - total_child_time
     end
+
+    def merge!(other)
+      raise "attempting to merge unrelated stats" if name != other.name
+
+      @count += other.count
+      @total_time += other.total_time
+      @total_child_time += other.total_child_time
+    end
   end
 end
