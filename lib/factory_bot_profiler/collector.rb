@@ -30,6 +30,18 @@ module FactoryBotProfiler
       take_factory_values_by(:average_time, n)
     end
 
+    def merge!(other)
+      other.each_factory do |name, stat|
+        @by_factory[name].merge!(stat)
+      end
+
+      self
+    end
+
+    def each_factory(...)
+      @by_factory.each(...)
+    end
+
     private
 
     def take_factory_values_by(stat, n)
