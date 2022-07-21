@@ -57,8 +57,8 @@ RSpec.describe FactoryBotProfiler do
       factory :profile
     end
 
-    collector = FactoryBotProfiler::Collector.new
-    FactoryBotProfiler.subscribe(collector)
+    stats = FactoryBotProfiler::AggregateStats.new
+    FactoryBotProfiler.subscribe(stats)
 
     FactoryBot.create(:repository) #   1 repo, 1 org, 2 users, 2 profiles
     FactoryBot.create(:organization) #         1 org, 1 user,  1 profile
@@ -66,21 +66,21 @@ RSpec.describe FactoryBotProfiler do
 
     FactoryBotProfiler.report if ENV["DEBUG"]
 
-    expect(collector.total_time.round(1)).to eq(2.3)
+    expect(stats.total_time.round(1)).to eq(2.3)
 
-    highest_count = collector.highest_count(1).first
+    highest_count = stats.highest_count(1).first
     expect(highest_count.name).to eq(:profile)
     expect(highest_count.count).to eq(4)
 
-    highest_total_time = collector.highest_total_time(1).first
+    highest_total_time = stats.highest_total_time(1).first
     expect(highest_total_time.name).to eq(:organization)
     expect(highest_total_time.total_time.round(1)).to eq(1.6)
 
-    highest_self_time = collector.highest_self_time(1).first
+    highest_self_time = stats.highest_self_time(1).first
     expect(highest_self_time.name).to eq(:user)
     expect(highest_self_time.total_self_time.round(1)).to eq(0.9)
 
-    highest_average_time = collector.highest_average_time(1).first
+    highest_average_time = stats.highest_average_time(1).first
     expect(highest_average_time.name).to eq(:repository)
     expect(highest_average_time.average_time.round(1)).to eq(1.4)
   end
@@ -135,8 +135,8 @@ RSpec.describe FactoryBotProfiler do
       factory :seat_warmer
     end
 
-    collector = FactoryBotProfiler::Collector.new
-    FactoryBotProfiler.subscribe(collector)
+    stats = FactoryBotProfiler::AggregateStats.new
+    FactoryBotProfiler.subscribe(stats)
 
     FactoryBot.create(:car)
     FactoryBot.create(:car, :ex)
@@ -144,9 +144,9 @@ RSpec.describe FactoryBotProfiler do
 
     FactoryBotProfiler.report if ENV["DEBUG"]
 
-    expect(collector.total_time.round(1)).to eq(2.1)
+    expect(stats.total_time.round(1)).to eq(2.1)
 
-    highest_total_time = collector.highest_total_time(1).first
+    highest_total_time = stats.highest_total_time(1).first
     expect(highest_total_time.name).to eq(:car)
 
     expect(highest_total_time.individual_child_times[:moon_roof].round(1)).to eq(0.6)

@@ -1,7 +1,7 @@
 require_relative "factory_stat"
 
 module FactoryBotProfiler
-  class Collector
+  class AggregateStats
     def initialize
       @by_factory = stats_hash
     end

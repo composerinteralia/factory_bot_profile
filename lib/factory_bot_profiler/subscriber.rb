@@ -2,9 +2,9 @@ require_relative "stack"
 
 module FactoryBotProfiler
   class Subscriber
-    def initialize(collector)
+    def initialize(stats)
       @stack = Stack.new
-      @collector = collector
+      @stats = stats
     end
 
     def start(_, _, payload)
@@ -12,7 +12,7 @@ module FactoryBotProfiler
     end
 
     def finish(*)
-      @collector.collect(@stack.pop)
+      @stats.collect(@stack.pop)
     end
   end
 end
