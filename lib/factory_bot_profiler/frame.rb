@@ -1,17 +1,14 @@
 module FactoryBotProfiler
   class Frame
-    attr_accessor :name, :start, :child_time, :child_count
+    attr_accessor :name, :start, :child_time
 
     def initialize(name)
       @name = name
       @start = Time.now
       @child_time = Hash.new { 0 }
-      @child_count = Hash.new { 0 }
     end
 
     def observe_child(frame)
-      @child_count[frame.name] += 1
-
       @child_time[frame.name] += frame.self_time
       frame.child_time.each do |factory_name, time|
         @child_time[factory_name] += time
