@@ -3,9 +3,9 @@ module FactoryBotProfiler
     class SimpleReporter
       N = 4
 
-      def initialize(collector)
+      def initialize(collector, io)
         @collector = collector
-        @io = $stderr
+        @io = io
       end
 
       def report
