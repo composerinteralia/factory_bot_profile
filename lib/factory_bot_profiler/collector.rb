@@ -40,6 +40,17 @@ module FactoryBotProfiler
       @by_factory = factory_stats.merge!(by_factory)
     end
 
+    def merge!(other)
+      other.each_factory do |name, stat|
+        @by_factory[name].merge!(stat)
+      end
+      self
+    end
+
+    def each_factory(...)
+      @by_factory.each(...)
+    end
+
     private
 
     def stats_hash
