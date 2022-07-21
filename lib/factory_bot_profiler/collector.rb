@@ -3,7 +3,7 @@ require_relative "factory_stat"
 module FactoryBotProfiler
   class Collector
     def initialize
-      @by_factory = Hash.new { |h, k| h[k] = FactoryStat.new(k) }
+      @by_factory = stats_hash
     end
 
     def collect(frame)
@@ -30,11 +30,20 @@ module FactoryBotProfiler
       take_factory_values_by(:average_time, n)
     end
 
+    def marshal_dump
+      # Cannot dump hash with a default proc, so make a copy with no default
+      # Need to disable standard because to_h is not the same thing in this case
+      Hash[@by_factory] # rubocop:disable Style/HashConversion
+    end
+
+    def marshal_load(by_factory)
+      @by_factory = factory_stats.merge!(by_factory)
+    end
+
     def merge!(other)
       other.each_factory do |name, stat|
         @by_factory[name].merge!(stat)
       end
-
       self
     end
 
@@ -43,6 +52,10 @@ module FactoryBotProfiler
     end
 
     private
+
+    def stats_hash
+      Hash.new { |h, k| h[k] = FactoryStat.new(k) }
+    end
 
     def take_factory_values_by(stat, n)
       @by_factory.values.sort_by(&stat).last(n).reverse
