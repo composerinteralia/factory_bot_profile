@@ -5,38 +5,33 @@ require "factory_bot"
 
 RSpec.describe FactoryBotProfiler do
   it "reports factory usage" do
-    define_class("FakeRecord") do
-      def save!
-      end
-    end
-
-    define_class("Repository", FakeRecord) do
+    define_class("Repository") do
       attr_accessor :user, :organization
 
-      def initialize
-        sleep 0.2
+      def save!
+        Timecop.travel(Time.now + 2)
       end
     end
 
-    define_class("User", FakeRecord) do
+    define_class("User") do
       attr_accessor :profile
 
-      def initialize
-        sleep 0.3
+      def save!
+        Timecop.travel(Time.now + 3)
       end
     end
 
-    define_class("Organization", FakeRecord) do
+    define_class("Organization") do
       attr_accessor :owner
 
-      def initialize
-        sleep 0.4
+      def save!
+        Timecop.travel(Time.now + 4)
       end
     end
 
-    define_class("Profile", FakeRecord) do
-      def initialize
-        sleep 0.1
+    define_class("Profile") do
+      def save!
+        Timecop.travel(Time.now + 1)
       end
     end
 
@@ -66,7 +61,7 @@ RSpec.describe FactoryBotProfiler do
 
     FactoryBotProfiler.report if ENV["DEBUG"]
 
-    expect(stats.total_time.round(1)).to eq(2.3)
+    expect(stats.total_time.round).to eq(23)
 
     highest_count = stats.highest_count(1).first
     expect(highest_count.name).to eq(:profile)
@@ -74,46 +69,41 @@ RSpec.describe FactoryBotProfiler do
 
     highest_total_time = stats.highest_total_time(1).first
     expect(highest_total_time.name).to eq(:organization)
-    expect(highest_total_time.total_time.round(1)).to eq(1.6)
+    expect(highest_total_time.total_time.round).to eq(16)
 
     highest_self_time = stats.highest_self_time(1).first
     expect(highest_self_time.name).to eq(:user)
-    expect(highest_self_time.total_self_time.round(1)).to eq(0.9)
+    expect(highest_self_time.total_self_time.round).to eq(9)
 
     highest_average_time = stats.highest_average_time(1).first
     expect(highest_average_time.name).to eq(:repository)
-    expect(highest_average_time.average_time.round(1)).to eq(1.4)
+    expect(highest_average_time.average_time.round).to eq(14)
   end
 
   it "reports with traits" do
-    define_class("FakeRecord") do
-      def save!
-      end
-    end
-
-    define_class("Car", FakeRecord) do
+    define_class("Car") do
       attr_accessor :moon_roof, :flatscreen_tv, :seat_warmer
 
-      def initialize
-        sleep 0.4
+      def save!
+        Timecop.travel(Time.now + 4)
       end
     end
 
-    define_class("MoonRoof", FakeRecord) do
-      def initialize
-        sleep 0.3
+    define_class("MoonRoof") do
+      def save!
+        Timecop.travel(Time.now + 3)
       end
     end
 
-    define_class("FlatscreenTv", FakeRecord) do
-      def initialize
-        sleep 0.2
+    define_class("FlatscreenTv") do
+      def save!
+        Timecop.travel(Time.now + 2)
       end
     end
 
-    define_class("SeatWarmer", FakeRecord) do
-      def initialize
-        sleep 0.1
+    define_class("SeatWarmer") do
+      def save!
+        Timecop.travel(Time.now + 1)
       end
     end
 
@@ -144,20 +134,20 @@ RSpec.describe FactoryBotProfiler do
 
     FactoryBotProfiler.report if ENV["DEBUG"]
 
-    expect(stats.total_time.round(1)).to eq(2.1)
+    expect(stats.total_time.round).to eq(21)
 
     highest_total_time = stats.highest_total_time(1).first
     expect(highest_total_time.name).to eq(:car)
 
     child_times = highest_total_time.child_stats.transform_values(&:total_time)
-    expect(child_times[:moon_roof].round(1)).to eq(0.6)
-    expect(child_times[:flatscreen_tv].round(1)).to eq(0.2)
-    expect(child_times[:seat_warmer].round(1)).to eq(0.1)
+    expect(child_times[:moon_roof].round).to eq(6)
+    expect(child_times[:flatscreen_tv].round).to eq(2)
+    expect(child_times[:seat_warmer].round).to eq(1)
 
     child_average_times = highest_total_time.child_stats.transform_values(&:average_time)
-    expect(child_average_times[:moon_roof].round(1)).to eq(0.3)
-    expect(child_average_times[:flatscreen_tv].round(1)).to eq(0.2)
-    expect(child_average_times[:seat_warmer].round(1)).to eq(0.1)
+    expect(child_average_times[:moon_roof].round).to eq(3)
+    expect(child_average_times[:flatscreen_tv].round).to eq(2)
+    expect(child_average_times[:seat_warmer].round).to eq(1)
 
     child_counts = highest_total_time.child_stats.transform_values(&:count)
     expect(child_counts[:moon_roof]).to eq(2)
