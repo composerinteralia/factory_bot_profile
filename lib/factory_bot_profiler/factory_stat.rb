@@ -6,8 +6,8 @@ module FactoryBotProfiler
       @name = name
       @count = 0
       @total_time = 0
-      @individual_child_times = Hash.new { 0 }
-      @individual_child_count = Hash.new { 0 }
+      @individual_child_times = Hash.new(0)
+      @individual_child_count = Hash.new(0)
     end
 
     def increment(frame)

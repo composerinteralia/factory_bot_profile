@@ -37,7 +37,7 @@ module FactoryBotProfiler
     end
 
     def marshal_load(by_factory)
-      @by_factory = factory_stats.merge!(by_factory)
+      @by_factory = stats_hash.merge!(by_factory)
     end
 
     def merge!(other)
