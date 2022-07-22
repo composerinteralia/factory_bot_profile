@@ -14,12 +14,12 @@ module FactoryBotProfiler
     ActiveSupport::Notifications.subscribe("factory_bot.run_factory", subscriber)
   end
 
-  def self.report(reporter_class = Reporters::SimpleReporter)
-    reporter_class.new(@stats).report if @stats
+  def self.report(reporter_class = Reporters::SimpleReporter, io: $stdout)
+    reporter_class.new(@stats, io: io).report if @stats
   end
 
-  def self.merge_and_report(all_stats, reporter_class = Reporters::SimpleReporter)
+  def self.merge_and_report(all_stats, reporter_class = Reporters::SimpleReporter, io: $stdout)
     merged_stats = all_stats.reduce(AggregateStats.new, &:merge!)
-    reporter_class.new(merged_stats).report
+    reporter_class.new(merged_stats, io: io).report
   end
 end
