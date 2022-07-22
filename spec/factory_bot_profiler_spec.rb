@@ -59,7 +59,7 @@ RSpec.describe FactoryBotProfiler do
     FactoryBot.create(:organization) #         1 org, 1 user,  1 profile
     FactoryBot.create(:profile) #                              1 profile
 
-    FactoryBotProfiler.report if ENV["DEBUG"]
+    generate_test_report(:usage)
 
     expect(stats.total_time.round).to eq(23)
 
@@ -132,7 +132,7 @@ RSpec.describe FactoryBotProfiler do
     FactoryBot.create(:car, :ex)
     FactoryBot.create(:car, :lx)
 
-    FactoryBotProfiler.report if ENV["DEBUG"]
+    generate_test_report(:usage_with_traits)
 
     expect(stats.total_time.round).to eq(21)
 
@@ -160,6 +160,12 @@ RSpec.describe FactoryBotProfiler do
   def define_class(name, parent = Object, &block)
     stub_const(name, Class.new(parent)).tap do |const|
       const.class_eval(&block) if block
+    end
+  end
+
+  def generate_test_report(name)
+    File.open("test_reports/#{name}.txt", "w") do |f|
+      FactoryBotProfiler.report(io: f)
     end
   end
 end
