@@ -1,4 +1,4 @@
-require_relative "factory_stat"
+require_relative "stat"
 
 module FactoryBotProfiler
   class AggregateStats

@@ -149,13 +149,20 @@ RSpec.describe FactoryBotProfiler do
     highest_total_time = stats.highest_total_time(1).first
     expect(highest_total_time.name).to eq(:car)
 
-    expect(highest_total_time.child_times[:moon_roof].round(1)).to eq(0.6)
-    expect(highest_total_time.child_times[:flatscreen_tv].round(1)).to eq(0.2)
-    expect(highest_total_time.child_times[:seat_warmer].round(1)).to eq(0.1)
+    child_times = highest_total_time.child_stats.transform_values(&:total_time)
+    expect(child_times[:moon_roof].round(1)).to eq(0.6)
+    expect(child_times[:flatscreen_tv].round(1)).to eq(0.2)
+    expect(child_times[:seat_warmer].round(1)).to eq(0.1)
 
-    expect(highest_total_time.child_counts[:moon_roof]).to eq(2)
-    expect(highest_total_time.child_counts[:flatscreen_tv]).to eq(1)
-    expect(highest_total_time.child_counts[:seat_warmer]).to eq(1)
+    child_average_times = highest_total_time.child_stats.transform_values(&:average_time)
+    expect(child_average_times[:moon_roof].round(1)).to eq(0.3)
+    expect(child_average_times[:flatscreen_tv].round(1)).to eq(0.2)
+    expect(child_average_times[:seat_warmer].round(1)).to eq(0.1)
+
+    child_counts = highest_total_time.child_stats.transform_values(&:count)
+    expect(child_counts[:moon_roof]).to eq(2)
+    expect(child_counts[:flatscreen_tv]).to eq(1)
+    expect(child_counts[:seat_warmer]).to eq(1)
   end
 
   private
