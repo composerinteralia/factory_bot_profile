@@ -37,6 +37,12 @@ module FactoryBotProfiler
 
       @count += other.count
       @total_time += other.total_time
+      other.individual_child_times.each do |name, time|
+        @individual_child_times[name] += time
+      end
+      other.individual_child_count.each do |name, count|
+        @individual_child_count[name] += count
+      end
     end
   end
 end
