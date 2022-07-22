@@ -23,8 +23,8 @@ module FactoryBotProfiler
         puts "  Slowest factories on average:"
         @stats.highest_average_time(N).each do |stat|
           puts "    - :#{stat.name} factory took #{(stat.average_time).round(2)} seconds on average (called #{stat.count} times)"
-          stat.individual_child_times.each do |factory_name, time|
-            puts "      - #{time.round(2)} spent in :#{factory_name} called #{stat.individual_child_count[factory_name]}/#{stat.count} time(s)"
+          stat.child_times.each do |factory_name, time|
+            puts "      - #{time.round(2)} spent in :#{factory_name} called #{stat.child_counts[factory_name]}/#{stat.count} time(s)"
           end
           puts
         end

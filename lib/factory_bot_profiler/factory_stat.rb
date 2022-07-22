@@ -1,13 +1,13 @@
 module FactoryBotProfiler
   class FactoryStat
-    attr_reader :name, :count, :total_time, :individual_child_times, :individual_child_count
+    attr_reader :name, :count, :total_time, :child_times, :child_counts
 
     def initialize(name)
       @name = name
       @count = 0
       @total_time = 0
-      @individual_child_times = Hash.new(0)
-      @individual_child_count = Hash.new(0)
+      @child_times = Hash.new(0)
+      @child_counts = Hash.new(0)
     end
 
     def increment(frame)
@@ -15,8 +15,8 @@ module FactoryBotProfiler
       @total_time += frame.duration
 
       frame.child_time.each do |factory_name, time|
-        @individual_child_times[factory_name] += time
-        @individual_child_count[factory_name] += 1
+        @child_times[factory_name] += time
+        @child_counts[factory_name] += 1
       end
     end
 
@@ -29,7 +29,7 @@ module FactoryBotProfiler
     end
 
     def total_child_time
-      individual_child_times.values.sum
+      child_times.values.sum
     end
 
     def merge!(other)
@@ -37,11 +37,11 @@ module FactoryBotProfiler
 
       @count += other.count
       @total_time += other.total_time
-      other.individual_child_times.each do |name, time|
-        @individual_child_times[name] += time
+      other.child_times.each do |name, time|
+        @child_times[name] += time
       end
-      other.individual_child_count.each do |name, count|
-        @individual_child_count[name] += count
+      other.child_counts.each do |name, count|
+        @child_counts[name] += count
       end
     end
   end

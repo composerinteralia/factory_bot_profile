@@ -22,8 +22,8 @@ RSpec.describe FactoryBotProfiler::FactoryStat do
       stat.merge!(other_stat)
 
       expect(stat.total_time).to eq(7)
-      expect(stat.individual_child_times).to eq(a: 3, b: 2, c: 1)
-      expect(stat.individual_child_count).to eq(a: 2, b: 1, c: 1)
+      expect(stat.child_times).to eq(a: 3, b: 2, c: 1)
+      expect(stat.child_counts).to eq(a: 2, b: 1, c: 1)
     end
   end
 
