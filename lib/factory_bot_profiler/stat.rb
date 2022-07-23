@@ -52,6 +52,14 @@ module FactoryBotProfiler
       child_stats.values.map(&:total_time).sum
     end
 
+    def child_stats_by_total_time
+      child_stats.values.sort_by(&:total_time)
+    end
+
+    def child_stats_by_average_time
+      child_stats.values.sort_by(&:average_time)
+    end
+
     def merge!(other)
       super
 
