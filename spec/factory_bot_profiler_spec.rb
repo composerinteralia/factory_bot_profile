@@ -52,14 +52,13 @@ RSpec.describe FactoryBotProfiler do
       factory :profile
     end
 
-    stats = FactoryBotProfiler::AggregateStats.new
-    FactoryBotProfiler.subscribe(stats)
+    stats = FactoryBotProfiler.subscribed do
+      FactoryBot.create(:repository) #   1 repo, 1 org, 2 users, 2 profiles
+      FactoryBot.create(:organization) #         1 org, 1 user,  1 profile
+      FactoryBot.create(:profile) #                              1 profile
+    end
 
-    FactoryBot.create(:repository) #   1 repo, 1 org, 2 users, 2 profiles
-    FactoryBot.create(:organization) #         1 org, 1 user,  1 profile
-    FactoryBot.create(:profile) #                              1 profile
-
-    generate_test_report(:usage)
+    generate_test_report(stats, :usage)
 
     expect(stats.total_time.round).to eq(23)
 
@@ -125,14 +124,13 @@ RSpec.describe FactoryBotProfiler do
       factory :seat_warmer
     end
 
-    stats = FactoryBotProfiler::AggregateStats.new
-    FactoryBotProfiler.subscribe(stats)
+    stats = FactoryBotProfiler.subscribed do
+      FactoryBot.create(:car)
+      FactoryBot.create(:car, :ex)
+      FactoryBot.create(:car, :lx)
+    end
 
-    FactoryBot.create(:car)
-    FactoryBot.create(:car, :ex)
-    FactoryBot.create(:car, :lx)
-
-    generate_test_report(:usage_with_traits)
+    generate_test_report(stats, :usage_with_traits)
 
     expect(stats.total_time.round).to eq(21)
 
@@ -163,9 +161,9 @@ RSpec.describe FactoryBotProfiler do
     end
   end
 
-  def generate_test_report(name)
+  def generate_test_report(stats, name)
     File.open("test_reports/#{name}.txt", "w") do |f|
-      FactoryBotProfiler.report(io: f)
+      FactoryBotProfiler.report(stats, io: f)
     end
   end
 end
