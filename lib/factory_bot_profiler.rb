@@ -6,7 +6,7 @@ require_relative "factory_bot_profiler/version"
 require_relative "factory_bot_profiler/aggregate_stats"
 require_relative "factory_bot_profiler/subscriber"
 require_relative "factory_bot_profiler/subscription"
-require_relative "factory_bot_profiler/reporters/simple_reporter"
+require_relative "factory_bot_profiler/report/simple_report"
 
 module FactoryBotProfiler
   def self.reporting
@@ -29,12 +29,12 @@ module FactoryBotProfiler
     Subscription.new(stats).subscribe
   end
 
-  def self.report(stats, reporter_class = Reporters::SimpleReporter, io: $stdout)
-    reporter_class.new(stats, io: io).report if stats
+  def self.report(stats, reporter: Report::SimpleReport, io: $stdout)
+    reporter.new(stats, io: io).deliver if stats
   end
 
-  def self.merge_and_report(all_stats, reporter_class = Reporters::SimpleReporter, io: $stdout)
+  def self.merge_and_report(all_stats, reporter: Report::SimpleReport, io: $stdout)
     merged_stats = all_stats.reduce(AggregateStats.new, &:merge!)
-    report(merged_stats, reporter_class, io: io)
+    report(merged_stats, reporter: reporter, io: io)
   end
 end

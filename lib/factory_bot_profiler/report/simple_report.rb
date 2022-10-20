@@ -1,13 +1,12 @@
 module FactoryBotProfiler
-  module Reporters
-    class SimpleReporter
+  module Report
+    class SimpleReport
       def initialize(stats, io: $stdout)
         @stats = stats
         @io = io
       end
 
-      def report
-        io.puts
+      def deliver
         io.puts "++++++++ factory_bot stats:"
         io.puts
         io.puts "  Spent #{(stats.total_time).round(2)} seconds in factory_bot"
