@@ -10,17 +10,10 @@ require_relative "factory_bot_profiler/report/simple_report"
 
 module FactoryBotProfiler
   def self.reporting
-    stats = subscribed do
-      yield
-    end
-
-    report(stats)
-  end
-
-  def self.subscribed
     subscription = subscribe
-    yield
-    subscription.stats
+    result = yield
+    report(subscription.stats)
+    result
   ensure
     subscription.unsubscribe
   end

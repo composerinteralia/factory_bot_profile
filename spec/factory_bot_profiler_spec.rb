@@ -52,12 +52,14 @@ RSpec.describe FactoryBotProfiler do
       factory :profile
     end
 
-    stats = FactoryBotProfiler.subscribed do
-      FactoryBot.create(:repository) #   1 repo, 1 org, 2 users, 2 profiles
-      FactoryBot.create(:organization) #         1 org, 1 user,  1 profile
-      FactoryBot.create(:profile) #                              1 profile
-    end
+    subscription = FactoryBotProfiler.subscribe
 
+    FactoryBot.create(:repository) #   1 repo, 1 org, 2 users, 2 profiles
+    FactoryBot.create(:organization) #         1 org, 1 user,  1 profile
+    FactoryBot.create(:profile) #                              1 profile
+
+    subscription.unsubscribe
+    stats = subscription.stats
     generate_test_report(stats, :usage)
 
     expect(stats.total_time.round).to eq(23)
@@ -124,12 +126,14 @@ RSpec.describe FactoryBotProfiler do
       factory :seat_warmer
     end
 
-    stats = FactoryBotProfiler.subscribed do
-      FactoryBot.create(:car)
-      FactoryBot.create(:car, :ex)
-      FactoryBot.create(:car, :lx)
-    end
+    subscription = FactoryBotProfiler.subscribe
 
+    FactoryBot.create(:car)
+    FactoryBot.create(:car, :ex)
+    FactoryBot.create(:car, :lx)
+
+    subscription.unsubscribe
+    stats = subscription.stats
     generate_test_report(stats, :usage_with_traits)
 
     expect(stats.total_time.round).to eq(21)
