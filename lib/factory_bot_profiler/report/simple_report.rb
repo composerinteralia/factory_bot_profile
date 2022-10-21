@@ -7,6 +7,7 @@ module FactoryBotProfiler
       end
 
       def deliver
+        io.puts
         io.puts "++++++++ factory_bot stats:"
         io.puts
         io.puts "  Spent #{(stats.total_time).round(2)} seconds in factory_bot"
