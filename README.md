@@ -1,7 +1,9 @@
 # FactoryBotProfiler
 
-FactoryBotProfiler identifies expensive factories and heavy factory\_bot usage.
+FactoryBotProfiler identifies expensive factories and heavy [factory\_bot][] usage.
 Use this information to speed up your test suite!
+
+[factory\_bot]: https://github.com/thoughtbot/factory_bot
 
 ## Installation
 
