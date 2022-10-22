@@ -2,6 +2,7 @@
 
 require "active_support/isolated_execution_state"
 require "factory_bot"
+require "fileutils"
 
 RSpec.describe FactoryBotProfiler do
   it "reports factory usage" do
@@ -165,8 +166,12 @@ RSpec.describe FactoryBotProfiler do
     end
   end
 
+  before(:all) do
+    FileUtils.mkdir_p("tmp/test_reports")
+  end
+
   def generate_test_report(stats, name)
-    File.open("test_reports/#{name}.txt", "w") do |f|
+    File.open("tmp/test_reports/#{name}.txt", "w") do |f|
       FactoryBotProfiler.report(stats, io: f)
     end
   end
