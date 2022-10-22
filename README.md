@@ -60,7 +60,7 @@ this library fairly stable.
 
 [FactoryProf]: https://test-prof.evilmartians.io/#/profilers/factory_prof?id=factoryprof
 [TestProf]: https://test-prof.evilmartians.io/
-[notifications]: https://github.com/thoughtbot/factory_bot/blob/main/GETTING_STARTED.md#activesupport-instrumentation
+[instrumentation]: https://github.com/thoughtbot/factory_bot/blob/main/GETTING_STARTED.md#activesupport-instrumentation
 
 ## Development
 
