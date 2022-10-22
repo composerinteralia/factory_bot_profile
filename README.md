@@ -1,6 +1,7 @@
 # FactoryBotProfiler
 
-Profile your factory\_bot factories
+FactoryBotProfiler identifies expensive factories and heavy factory\_bot usage.
+Use this information to speed up your test suite!
 
 ## Installation
 
@@ -14,11 +15,52 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
 ## Usage
 
+The primary API for using this library is to wrap the code you want to profile
+with the `.reporting` method:
+
 ```rb
+require "factory_bot_profiler"
+
 FactoryBotProfiler.reporting do
   # Code that uses factory_bot
 end
 ```
+
+This will profile every call to factory\_bot inside the block, and then print
+the results to stdout after the code inside the block finishes.
+
+If you need more control over where to start and stop profiling, and when to
+report the results, use the `.subscribe` and `.report` methods:
+
+```rb
+subscription = FactoryBotProfiler.subscribe
+
+# Code that uses factory_bot
+
+subscription.unsubscribe
+FactoryBotProfiler.report(subscription.stats)
+```
+
+## Why not FactoryProf?
+
+[FactoryProf][] is another fantastic tool for profiling factories, and it
+includes a really neat flamegraph feature that this library doesn't have (at
+least not yet). So why did I write this library?
+
+FactoryProf profiles factories by monkey patching factory\_bot. It's also part
+of the larger [TestProf][] library, which includes a number of other monkey
+patches, and it's difficult to load FactoryProf without bringing in other parts
+of the library as well. These monkey patches can make it difficult to add
+FactoryProf to an application.
+
+FactoryBotProfiler, on the other hand, uses factory\_bot's built-in
+[instrumentation][] to build the profile. My hope is that using built-in
+factory\_bot features, and avoiding monkey patches or private APIs should make
+this library fairly stable.
+
+[FactoryProf]: https://test-prof.evilmartians.io/#/profilers/factory_prof?id=factoryprof
+[TestProf]: https://test-prof.evilmartians.io/
+[notifications]: https://github.com/thoughtbot/factory_bot/blob/main/GETTING_STARTED.md#activesupport-instrumentation
 
 ## Development
 
