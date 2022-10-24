@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-RSpec.describe FactoryBotProfiler::Stack do
+RSpec.describe FactoryBotProfile::Stack do
   it "pushes and pops" do
-    stack = FactoryBotProfiler::Stack.new
+    stack = FactoryBotProfile::Stack.new
     name = :name
 
     stack << name
@@ -12,7 +12,7 @@ RSpec.describe FactoryBotProfiler::Stack do
   end
 
   it "finishes frame when popping" do
-    stack = FactoryBotProfiler::Stack.new
+    stack = FactoryBotProfile::Stack.new
     name = :name
     duration = 42
 
@@ -25,7 +25,7 @@ RSpec.describe FactoryBotProfiler::Stack do
   end
 
   it "allows parent frame to observe child frames" do
-    stack = FactoryBotProfiler::Stack.new
+    stack = FactoryBotProfile::Stack.new
     parent_name = :parent
     child_name = :child
 

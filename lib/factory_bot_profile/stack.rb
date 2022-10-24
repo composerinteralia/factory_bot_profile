@@ -1,6 +1,6 @@
 require_relative "frame"
 
-module FactoryBotProfiler
+module FactoryBotProfile
   class Stack
     def initialize
       @stack = []

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-RSpec.describe FactoryBotProfiler::AggregateStats do
+RSpec.describe FactoryBotProfile::AggregateStats do
   it "serializes via Marshal" do
-    stats = FactoryBotProfiler::AggregateStats.new
-    frame = FactoryBotProfiler::Frame.new(:test).tap(&:finish!)
+    stats = FactoryBotProfile::AggregateStats.new
+    frame = FactoryBotProfile::Frame.new(:test).tap(&:finish!)
     stats.collect(frame)
 
     marshal_stats = Marshal.load(Marshal.dump(stats))

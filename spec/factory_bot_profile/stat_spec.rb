@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-RSpec.describe FactoryBotProfiler::FactoryStat do
+RSpec.describe FactoryBotProfile::FactoryStat do
   it "serializes via Marshal" do
-    stat = FactoryBotProfiler::FactoryStat.new(:test)
+    stat = FactoryBotProfile::FactoryStat.new(:test)
 
     marshal_stat = Marshal.load(Marshal.dump(stat))
 
@@ -11,11 +11,11 @@ RSpec.describe FactoryBotProfiler::FactoryStat do
 
   describe "#merge!" do
     it "merges the values from another factory_stat" do
-      stat = FactoryBotProfiler::FactoryStat.new(:stat)
+      stat = FactoryBotProfile::FactoryStat.new(:stat)
       frame = build_frame(duration: 2, child_time: {a: 1, b: 2})
       stat.increment(frame)
 
-      other_stat = FactoryBotProfiler::FactoryStat.new(:stat)
+      other_stat = FactoryBotProfile::FactoryStat.new(:stat)
       other_frame = build_frame(duration: 5, child_time: {a: 2, c: 1})
       other_stat.increment(other_frame)
 
@@ -32,6 +32,6 @@ RSpec.describe FactoryBotProfiler::FactoryStat do
   end
 
   def build_frame(duration:, child_time:)
-    double(FactoryBotProfiler::Frame, duration: duration, child_time: child_time)
+    double(FactoryBotProfile::Frame, duration: duration, child_time: child_time)
   end
 end

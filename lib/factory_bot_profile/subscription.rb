@@ -1,4 +1,4 @@
-module FactoryBotProfiler
+module FactoryBotProfile
   class Subscription
     attr_reader :stats
 
@@ -9,7 +9,7 @@ module FactoryBotProfiler
     def subscribe
       @subscription = ActiveSupport::Notifications.subscribe(
         "factory_bot.run_factory",
-        FactoryBotProfiler::Subscriber.new(stats)
+        FactoryBotProfile::Subscriber.new(stats)
       )
       self
     end

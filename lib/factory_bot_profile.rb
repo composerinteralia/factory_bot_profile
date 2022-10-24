@@ -2,13 +2,13 @@
 
 require "active_support/notifications"
 
-require_relative "factory_bot_profiler/version"
-require_relative "factory_bot_profiler/aggregate_stats"
-require_relative "factory_bot_profiler/subscriber"
-require_relative "factory_bot_profiler/subscription"
-require_relative "factory_bot_profiler/report/simple_report"
+require_relative "factory_bot_profile/version"
+require_relative "factory_bot_profile/aggregate_stats"
+require_relative "factory_bot_profile/subscriber"
+require_relative "factory_bot_profile/subscription"
+require_relative "factory_bot_profile/report/simple_report"
 
-module FactoryBotProfiler
+module FactoryBotProfile
   def self.reporting
     subscription = subscribe
     result = yield

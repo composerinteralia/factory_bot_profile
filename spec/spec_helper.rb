@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "factory_bot_profiler"
+require "factory_bot_profile"
 require "timecop"
 
 RSpec.configure do |config|

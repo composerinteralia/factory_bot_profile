@@ -4,7 +4,7 @@ require "active_support/isolated_execution_state"
 require "factory_bot"
 require "fileutils"
 
-RSpec.describe FactoryBotProfiler do
+RSpec.describe FactoryBotProfile do
   it "reports factory usage" do
     define_class("Repository") do
       attr_accessor :user, :organization
@@ -53,7 +53,7 @@ RSpec.describe FactoryBotProfiler do
       factory :profile
     end
 
-    subscription = FactoryBotProfiler.subscribe
+    subscription = FactoryBotProfile.subscribe
 
     FactoryBot.create(:repository) #   1 repo, 1 org, 2 users, 2 profiles
     FactoryBot.create(:organization) #         1 org, 1 user,  1 profile
@@ -127,7 +127,7 @@ RSpec.describe FactoryBotProfiler do
       factory :seat_warmer
     end
 
-    subscription = FactoryBotProfiler.subscribe
+    subscription = FactoryBotProfile.subscribe
 
     FactoryBot.create(:car)
     FactoryBot.create(:car, :ex)
@@ -172,7 +172,7 @@ RSpec.describe FactoryBotProfiler do
 
   def generate_test_report(stats, name)
     File.open("tmp/test_reports/#{name}.txt", "w") do |f|
-      FactoryBotProfiler.report(stats, io: f)
+      FactoryBotProfile.report(stats, io: f)
     end
   end
 end

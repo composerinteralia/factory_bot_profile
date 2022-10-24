@@ -1,4 +1,4 @@
-module FactoryBotProfiler
+module FactoryBotProfile
   class Stat
     attr_reader :name, :count, :total_time
 

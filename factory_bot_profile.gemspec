@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-require_relative "lib/factory_bot_profiler/version"
+require_relative "lib/factory_bot_profile/version"
 
 Gem::Specification.new do |spec|
-  spec.name = "factory_bot_profiler"
-  spec.version = FactoryBotProfiler::VERSION
+  spec.name = "factory_bot_profile"
+  spec.version = FactoryBotProfile::VERSION
   spec.authors = ["Daniel Colson"]
   spec.email = ["danieljamescolson@gmail.com"]
 
   spec.summary = "Profiling for factory_bot"
-  spec.homepage = "https://github.com/composerinterali/factory_bot_profiler"
+  spec.homepage = "https://github.com/composerinterali/factory_bot_profile"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 3.0.0"
 

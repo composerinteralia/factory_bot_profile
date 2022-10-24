@@ -1,6 +1,6 @@
 require_relative "stat"
 
-module FactoryBotProfiler
+module FactoryBotProfile
   class AggregateStats
     def initialize
       @by_factory = stats_hash

@@ -1,4 +1,4 @@
-module FactoryBotProfiler
+module FactoryBotProfile
   class Frame
     attr_accessor :name, :start, :child_time
 

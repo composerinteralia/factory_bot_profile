@@ -1,6 +1,6 @@
 require_relative "stack"
 
-module FactoryBotProfiler
+module FactoryBotProfile
   class Subscriber
     def initialize(stats)
       @stack = Stack.new
