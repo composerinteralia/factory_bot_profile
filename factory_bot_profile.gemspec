@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email = ["danieljamescolson@gmail.com"]
 
   spec.summary = "Profiling for factory_bot"
-  spec.homepage = "https://github.com/composerinterali/factory_bot_profile"
+  spec.homepage = "https://github.com/composerinteralia/factory_bot_profile"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 3.0.0"
 
