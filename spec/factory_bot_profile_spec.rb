@@ -172,7 +172,7 @@ RSpec.describe FactoryBotProfile do
 
   def generate_test_report(stats, name)
     File.open("tmp/test_reports/#{name}.txt", "w") do |f|
-      FactoryBotProfile.report(stats, io: f)
+      FactoryBotProfile.report(stats, io: f, count: 4)
     end
   end
 end

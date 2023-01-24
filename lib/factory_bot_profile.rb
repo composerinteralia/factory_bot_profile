@@ -22,12 +22,12 @@ module FactoryBotProfile
     Subscription.new(stats).subscribe
   end
 
-  def self.report(stats, reporter: Report::SimpleReport, io: $stdout)
-    reporter.new(stats, io: io).deliver if stats
+  def self.report(stats, reporter: Report::SimpleReport, **options)
+    reporter.new(stats, **options).deliver if stats
   end
 
-  def self.merge_and_report(all_stats, reporter: Report::SimpleReport, io: $stdout)
+  def self.merge_and_report(all_stats, reporter: Report::SimpleReport, **options)
     merged_stats = all_stats.reduce(AggregateStats.new, &:merge!)
-    report(merged_stats, reporter: reporter, io: io)
+    report(merged_stats, reporter: reporter, **options)
   end
 end
